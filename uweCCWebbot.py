@@ -74,8 +74,8 @@ def test_eight_components():
     btnCreateTrip = driver.find_element(By.XPATH, "//*[@id='ctl00_ctl00_Main_AdminPageContent_lbCreateNewGroup']")
     btnCreateTrip.click()
 
-    dateOfTrip = input("Date Of Trip: ")
-    nameOfTrip = input("Enter Name of Trip")
+    dateOfTrip = input("Date Of Trip yyyy/mm/dd: ")
+    nameOfTrip = input("Enter Name of Trip: ")
     
     txtBoxTitle = driver.find_element(By.XPATH, "//*[@id='ctl00_ctl00_Main_AdminPageContent_txtName_txtTextbox']")
     txtBoxTitle.send_keys(f"{dateOfTrip} TRIP {nameOfTrip}")

@@ -15,7 +15,8 @@ cars = [
     {"name" : "Isaac", "mpg" : 40 , "fuelType" : 'p', "capBikes" : 3, "capPeople" : 5, "costPerMile" : 0},
     {"name" : "Anais", "mpg" : 38 , "fuelType" : 'p', "capBikes" : 0, "capPeople" : 5, "costPerMile" : 0},
     {"name" : "Patsy", "mpg" : 40 , "fuelType" : 'p', "capBikes" : 0, "capPeople" : 5, "costPerMile" : 0},
-    {"name" : "Toby", "mpg" : 56 , "fuelType" : 'p', "capBikes" : 2, "capPeople" : 2, "costPerMile" : 0},
+    {"name" : "Toby", "mpg" : 36 , "fuelType" : 'p', "capBikes" : 2, "capPeople" : 2, "costPerMile" : 0},
+    {"name" : "Jay", "mpg" : 45 , "fuelType" : 'd', "capBikes" : 2, "capPeople" : 2, "costPerMile" : 0},
 ]
 carsTaken = []
 print("Please Enter the amount of people paying: ")

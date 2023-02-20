@@ -57,6 +57,8 @@ Contributors names and contact info
 ex. Jack Holdsworth @ [my website](https://holdsworth.dev)
 
 ## Version History
+* 0.3
+  * now can add trips using webbot
 * 0.2
   * fields example file added
 * 0.1
