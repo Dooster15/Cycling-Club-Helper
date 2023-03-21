@@ -11,11 +11,12 @@ from datetime import timedelta
 from fields import *
 from locations import *
 import os
-
 PATH = "C:\Program Files (x86)\chromedriver.exe"
 
 
-def test_eight_components():
+
+def test_eight_components(tripDate):
+    
     driver = webdriver.Chrome(PATH)
 
     driver.get("https://www.thestudentsunion.co.uk/login/")
@@ -25,16 +26,35 @@ def test_eight_components():
     
     
     
-    
     count = 0
 
     # title = driver.title
     # assert title == "Web form"
     driver.implicitly_wait(1.0)
 
-    tripDate = input("Enter date of trip (DD/MM/YYYY): ")
-    departureTime = input("Enter time of departure (HH:MM): ")
-    returnTime = input("Enter time of leaving venue (HH:MM): ")
+    
+
+    #tripDate = input("Enter date of trip (DD/MM/YYYY): ")
+
+    day, month, year = (int(x) for x in tripDate.split('/')) 
+    ans = datetime.date(year, month, day)
+    weekDay = ans.weekday()
+    weekDays = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
+    
+    print(ans.weekday())
+
+    if weekDay == 2:
+        departureTime = input("Enter time of departure (HH:MM): Press enter for 12:30 ") or "12:30"
+        returnTime = input("Enter time of leaving venue (HH:MM): Press enter for 19:00 ") or "19:00"
+    elif weekDay == 6:
+        departureTime = input("Enter time of departure (HH:MM): Press enter for 10:00 ") or "10:00"
+        returnTime = input("Enter time of leaving venue (HH:MM): Press enter for 16:00 ") or "16:00"
+    else:
+        departureTime = input("Enter time of departure (HH:MM): ")
+        returnTime = input("Enter time of leaving venue (HH:MM): ")
+
+    
+    
     
     x = 0
     for address in addresses:
@@ -45,7 +65,7 @@ def test_eight_components():
     
     addressLocation = addresses[int(input("Please select a location: "))]
 
-    directory = f"{addressLocation['nameShort']}-{now1.day}.{now1.month}.{now1.year}" # change me to actual date of event
+    directory = f"{addressLocation['nameShort']}-{ans.day}.{ans.month}.{ans.year}" 
     path = os.path.join(parent_dir, directory)
     try:
         os.mkdir(path)
@@ -90,7 +110,7 @@ def test_eight_components():
     driver.save_screenshot(f"screenshots/{directory}/screenshot_{count}.png")
     count += 1
 
-    input("Please check the page is reset properly and then press enter: ")
+    #input("Please check the page is reset properly and then press enter: ")
 
     btnStart = driver.find_element(By.XPATH, "//*[@id='ctl00_survey1_btnResubmit']")
     btnStart.click()
@@ -297,14 +317,10 @@ def test_eight_components():
     count += 1
 
     
-    day, month, year = (int(x) for x in tripDate.split('/')) 
-    ans = datetime.date(year, month, day)
-    weekDay = ans.weekday()
-    weekDays = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
     
-    print(ans.weekday())
 
     title = f"MTB - {weekDays[weekDay]} at {addressLocation['nameShort']} {ans.day:02d}/{ans.month:02d}"
+    shortTile = f"MTB - {weekDays[weekDay]} at {addressLocation['nameShort']}"
 
     signupEventName= driver.find_element(By.XPATH, "//*[@id='ctl00_ctl00_Main_AdminPageContent_txtName_txtTextbox']")
     signupEventName.send_keys(title)
@@ -423,8 +439,8 @@ def test_eight_components():
     
 
     input("Press any key to finish")
-    
+    return [signupDate,title,shortTile]
     
 
 
-test_eight_components()
+#test_eight_components()

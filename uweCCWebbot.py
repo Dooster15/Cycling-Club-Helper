@@ -13,7 +13,7 @@ PATH = "C:\Program Files (x86)\chromedriver.exe"
 attendingIDs = []
 
 
-def test_eight_components():
+def test_eight_components(selectedSignup,dateOfTrip,nameOfTrip):
     driver = webdriver.Chrome(PATH)
 
     driver.get("https://www.thestudentsunion.co.uk/login/")
@@ -56,9 +56,9 @@ def test_eight_components():
         #     btnSignups.click()
         #     break
         
-    selectedSignup = input("Please enter a number: ")
-    dateOfTrip = input("Date Of Trip yyyy/mm/dd: ")
-    nameOfTrip = input("Enter Name of Trip: ")
+    # selectedSignup = input("Please enter a number: ")
+    # dateOfTrip = input("Date Of Trip yyyy/mm/dd: ")
+    # nameOfTrip = input("Enter Name of Trip: ")
 
     while(1):     
         now1 = datetime.datetime.now()
@@ -119,4 +119,4 @@ def test_eight_components():
         time.sleep(1)
     
 
-test_eight_components()
+# test_eight_components()
