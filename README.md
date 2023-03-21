@@ -38,6 +38,7 @@
 ### Installing
 
 * pip install -v selenium==4.5.0
+* pip install webdriver-manager
 
 ### Executing program
 * How to run uweCCWebbot:

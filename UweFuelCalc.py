@@ -1,5 +1,5 @@
 x = 0
-Dprice = 1.69
+Dprice = 1.68
 Pprice = 1.49
 gallonsToLiters = 0.219
 muitiplier = 1.2
@@ -7,7 +7,7 @@ totalCost = 0
 import math
 #make a optimal calculator
 cars = [
-    {"name" : "Jack", "mpg" : 40 , "fuelType" : 'd', "capBikes" : 9, "capPeople" : 3, "costPerMile" : 0},
+    {"name" : "Jack", "mpg" : 42 , "fuelType" : 'd', "capBikes" : 9, "capPeople" : 3, "costPerMile" : 0},
     {"name" : "AlexV1", "mpg" : 45 , "fuelType" : 'd', "capBikes" : 5, "capPeople" : 2, "costPerMile" : 0},
     #{"name" : "AlexV2", "mpg" : 50 , "fuelType" : 'd', "capBikes" : 3, "capPeople" : 5, "costPerMile" : 0},
     {"name" : "MattyV1", "mpg" : 30 , "fuelType" : 'p', "capBikes" : 2, "capPeople" : 1, "costPerMile" : 0},

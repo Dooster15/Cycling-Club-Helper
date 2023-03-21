@@ -4,12 +4,15 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.common.exceptions import NoSuchElementException
 import time
+import datetime
+from datetime import timedelta
 from fields import *
 from locations import *
+import os
 
 PATH = "C:\Program Files (x86)\chromedriver.exe"
-attendingIDs = []
 
 
 def test_eight_components():
@@ -17,9 +20,40 @@ def test_eight_components():
 
     driver.get("https://www.thestudentsunion.co.uk/login/")
 
+    now1 = datetime.datetime.now()
+    parent_dir = "C:/Users/doost/OneDrive/Documents/Code/CyclingClub/screenshots/"
+    
+    
+    
+    
+    count = 0
+
     # title = driver.title
     # assert title == "Web form"
     driver.implicitly_wait(1.0)
+
+    tripDate = input("Enter date of trip (DD/MM/YYYY): ")
+    departureTime = input("Enter time of departure (HH:MM): ")
+    returnTime = input("Enter time of leaving venue (HH:MM): ")
+    
+    x = 0
+    for address in addresses:
+
+        print(str(x) + ". ",end="")
+        print(str(address["name"]))
+        x += 1
+    
+    addressLocation = addresses[int(input("Please select a location: "))]
+
+    directory = f"{addressLocation['nameShort']}-{now1.day}.{now1.month}.{now1.year}" # change me to actual date of event
+    path = os.path.join(parent_dir, directory)
+    try:
+        os.mkdir(path)
+    except:
+        pass
+
+    driver.save_screenshot(f"screenshots/{directory}/screenshot_{count}.png")
+    count += 1
     
     btnCurrentStudent = driver.find_element(By.XPATH, "//*[@id='skin_corners']/div[2]/div/div[2]/div[2]/div[4]")
     
@@ -42,8 +76,21 @@ def test_eight_components():
     btnAcceptCookies.click()
 
     driver.get("https://www.thestudentsunion.co.uk/opportunities/howto/trip-form/")
+    driver.save_screenshot(f"screenshots/{directory}/screenshot_{count}.png")
+    count += 1
+    try:
+        btnCancel = driver.find_element(By.XPATH, "//*[@id='ctl00_survey1_btnCancel']")
+        btnCancel.click()
+        driver.switch_to.alert.accept()
+        time.sleep(3)
+    except NoSuchElementException:
+        print("Location check correct")
+        pass
+    
+    driver.save_screenshot(f"screenshots/{directory}/screenshot_{count}.png")
+    count += 1
 
-    input("")
+    input("Please check the page is reset properly and then press enter: ")
 
     btnStart = driver.find_element(By.XPATH, "//*[@id='ctl00_survey1_btnResubmit']")
     btnStart.click()
@@ -51,44 +98,72 @@ def test_eight_components():
     btnTripType = driver.find_element(By.XPATH, "//*[@id='ctl00_survey1_question_2739_radioList_2']")
     btnTripType.click()
 
+    driver.save_screenshot(f"screenshots/{directory}/screenshot_{count}.png")
+    count += 1
+
     btnNext = driver.find_element(By.XPATH, "//*[@id='ctl00_survey1_btnNext']")
     btnNext.click()
 
     btnTripDays = driver.find_element(By.XPATH, "//*[@id='ctl00_survey1_question_1350_radioList_0']")
     btnTripDays.click()
+
+    driver.save_screenshot(f"screenshots/{directory}/screenshot_{count}.png")
+    count += 1
     
     btnNext = driver.find_element(By.XPATH, "//*[@id='ctl00_survey1_btnNext']")
     btnNext.click()
     
     boxName = driver.find_element(By.XPATH, "//*[@id='ctl00_survey1_question_1354_txtTextbox']")
     boxName.send_keys(name)
+
+    driver.save_screenshot(f"screenshots/{directory}/screenshot_{count}.png")
+    count += 1
     
     boxPhoneNumber = driver.find_element(By.XPATH, "//*[@id='ctl00_survey1_question_1356_txtTextbox']")
     boxPhoneNumber.send_keys(phone)
 
+    driver.save_screenshot(f"screenshots/{directory}/screenshot_{count}.png")
+    count += 1
+
     boxEmail = driver.find_element(By.XPATH, "//*[@id='ctl00_survey1_question_1355_txtTextbox']")
     boxEmail.send_keys(email)
 
-    tripDate = input("Enter date of trip (DD/MM/YYYY): ")
+    driver.save_screenshot(f"screenshots/{directory}/screenshot_{count}.png")
+    count += 1
+
+    # tripDate = input("Enter date of trip (DD/MM/YYYY): ")
 
     boxDate = driver.find_element(By.XPATH, "//*[@id='ctl00_survey1_question_1352_txtTextbox']")
     boxDate.send_keys(tripDate)
 
+    driver.save_screenshot(f"screenshots/{directory}/screenshot_{count}.png")
+    count += 1
+
+    # departureTime = input("Enter time of departure (HH:MM): ")
+
     boxDepartTime = driver.find_element(By.XPATH, "//*[@id='ctl00_survey1_question_1357_txtTextbox']")
-    boxDepartTime.send_keys(input("Enter time of departure (HH:MM): "))
+    boxDepartTime.send_keys(departureTime)
+
+    driver.save_screenshot(f"screenshots/{directory}/screenshot_{count}.png")
+    count += 1
+
+    # returnTime = input("Enter time of leaving venue (HH:MM): ")
 
     boxReturnTime = driver.find_element(By.XPATH, "//*[@id='ctl00_survey1_question_1358_txtTextbox']")
-    boxReturnTime.send_keys(input("Enter time of leaving venue (HH:MM): "))
+    boxReturnTime.send_keys(returnTime)
 
-    print("")
-    x = 0
-    for address in addresses:
+    driver.save_screenshot(f"screenshots/{directory}/screenshot_{count}.png")
+    count += 1
 
-        print(str(x) + ". ",end="")
-        print(str(address["name"]))
-        x += 1
+    # print("")
+    # x = 0
+    # for address in addresses:
+
+    #     print(str(x) + ". ",end="")
+    #     print(str(address["name"]))
+    #     x += 1
     
-    addressLocation = addresses[int(input("Please select a location: "))]
+    # addressLocation = addresses[int(input("Please select a location: "))]
 
     boxLocationName = driver.find_element(By.XPATH, "//*[@id='ctl00_survey1_question_1353_txtTextbox']")
     boxLocationName.send_keys(addressLocation['name'])
@@ -108,8 +183,14 @@ def test_eight_components():
     boxPostCode = driver.find_element(By.XPATH, "//*[@id='ctl00_survey1_question_1351_txtPostcode']")
     boxPostCode.send_keys(addressLocation['postCode'])
 
+    driver.save_screenshot(f"screenshots/{directory}/screenshot_{count}.png")
+    count += 1
+
     boxCountry = driver.find_element(By.XPATH, "//*[@id='ctl00_survey1_question_1351_ddCountry']/option[2]")
     boxCountry.click()
+
+    driver.save_screenshot(f"screenshots/{directory}/screenshot_{count}.png")
+    count += 1
 
     btnNext = driver.find_element(By.XPATH, "//*[@id='ctl00_survey1_btnNext']")
     btnNext.click()
@@ -117,24 +198,45 @@ def test_eight_components():
     boxSport = driver.find_element(By.XPATH, "//*[@id='ctl00_survey1_question_1372_dd']/option[143]")
     boxSport.click()
 
+    driver.save_screenshot(f"screenshots/{directory}/screenshot_{count}.png")
+    count += 1
+
     boxDescription = driver.find_element(By.XPATH, "//*[@id='ctl00_survey1_question_5019_txtTextbox']")
     boxDescription.send_keys(f"MTB - Trip to {addressLocation['nameShort']}")
 
+    driver.save_screenshot(f"screenshots/{directory}/screenshot_{count}.png")
+    count += 1
+
 # add wednesday or sunday support
     boxTitle = driver.find_element(By.XPATH, "//*[@id='ctl00_survey1_question_1373_txtTextbox']")
-    boxTitle.send_keys(f"MTB - Trip to {addressLocation['nameShort']} on {tripDate[:4]}")
+    boxTitle.send_keys(f"MTB - Trip to {addressLocation['nameShort']} on {tripDate[:5]}")
+
+    driver.save_screenshot(f"screenshots/{directory}/screenshot_{count}.png")
+    count += 1
 
     boxFirstAider1 = driver.find_element(By.XPATH, "//*[@id='ctl00_survey1_question_1370_txtTextbox']")
     boxFirstAider1.send_keys("Jack Holdsworth")
 
+    driver.save_screenshot(f"screenshots/{directory}/screenshot_{count}.png")
+    count += 1
+
     boxFirstAider2 = driver.find_element(By.XPATH, "//*[@id='ctl00_survey1_question_1371_txtTextbox']")
     boxFirstAider2.send_keys("Jesse Lawson")
+
+    driver.save_screenshot(f"screenshots/{directory}/screenshot_{count}.png")
+    count += 1
 
     boxEquipment= driver.find_element(By.XPATH, "//*[@id='ctl00_survey1_question_1369_txtTextbox']")
     boxEquipment.send_keys("1 x 4 bike rack")
 
+    driver.save_screenshot(f"screenshots/{directory}/screenshot_{count}.png")
+    count += 1
+
     boxNightAccess= driver.find_element(By.XPATH, "//*[@id='ctl00_survey1_question_3654_txtTextbox']")
     boxNightAccess.send_keys("no")
+
+    driver.save_screenshot(f"screenshots/{directory}/screenshot_{count}.png")
+    count += 1
 
     btnNext = driver.find_element(By.XPATH, "//*[@id='ctl00_survey1_btnNext']")
     btnNext.click()
@@ -142,11 +244,20 @@ def test_eight_components():
     boxRiskAssessment = driver.find_element(By.XPATH, "//*[@id='ctl00_survey1_question_1474_dd']/option[2]")
     boxRiskAssessment.click()
 
+    driver.save_screenshot(f"screenshots/{directory}/screenshot_{count}.png")
+    count += 1
+
     btnNext = driver.find_element(By.XPATH, "//*[@id='ctl00_survey1_btnNext']")
     btnNext.click()
 
+    driver.save_screenshot(f"screenshots/{directory}/screenshot_{count}.png")
+    count += 1
+
     boxDriverQuestion = driver.find_element(By.XPATH, "//*[@id='ctl00_survey1_question_1482_dd']/option[4]")
     boxDriverQuestion.click()
+
+    driver.save_screenshot(f"screenshots/{directory}/screenshot_{count}.png")
+    count += 1
 
     btnNext = driver.find_element(By.XPATH, "//*[@id='ctl00_survey1_btnNext']")
     btnNext.click()
@@ -154,113 +265,166 @@ def test_eight_components():
     boxTravelDescription= driver.find_element(By.XPATH, "//*[@id='ctl00_survey1_question_1453_txtTextbox']")
     boxTravelDescription.send_keys("Personal Vehicles")
 
+    driver.save_screenshot(f"screenshots/{directory}/screenshot_{count}.png")
+    count += 1
+
     btnNext = driver.find_element(By.XPATH, "//*[@id='ctl00_survey1_btnNext']")
     btnNext.click()
 
     boxRiskAssessmentQuestion = driver.find_element(By.XPATH, "//*[@id='ctl00_survey1_question_1454_dd']/option[2]")
     boxRiskAssessmentQuestion.click()
 
-    btnNext = driver.find_element(By.XPATH, "//*[@id='ctl00_survey1_btnNext']")
-    btnNext.click()
+    driver.save_screenshot(f"screenshots/{directory}/screenshot_{count}.png")
+    count += 1
 
     btnNext = driver.find_element(By.XPATH, "//*[@id='ctl00_survey1_btnNext']")
     btnNext.click()
 
+    driver.save_screenshot(f"screenshots/{directory}/screenshot_{count}.png")
+    count += 1
 
+    btnNext = driver.find_element(By.XPATH, "//*[@id='ctl00_survey1_btnNext']")
+    btnNext.click()
 
-    
-
-    
-
+    driver.save_screenshot(f"screenshots/{directory}/screenshot_{count}.png")
+    count += 1
 
     input("")
-    # numberOfRows = -1
-    # tableRows = WebDriverWait(driver, 10).until(EC.presence_of_all_elements_located((By.XPATH, "//*[@id='ctl00_ctl00_Main_AdminPageContent_gvSignups']/tbody/tr")))
-    # for num,tableRow in enumerate(tableRows[1:],start = 2):
-    #     name = tableRow.find_element(By.XPATH, ".//td[1]")
-    #     print(f"{num}. {name.text}")
-    #     # if "MTB" in name.text:
-    #     #     print("Found")
-    #     #     btnSignups = tableRow.find_element(By.XPATH, ".//td[4]/a")
-    #     #     btnSignups.click()
-    #     #     break
-    # selectedSignup = input("Please enter a number: ")
-    # btnSignups = tableRow.find_element(By.XPATH, f"//*[@id='ctl00_ctl00_Main_AdminPageContent_gvSignups']/tbody/tr[{selectedSignup}]/td[4]/a")
-    # btnSignups.click()
 
-    # tableSignupRows = WebDriverWait(driver, 10).until(EC.presence_of_all_elements_located((By.XPATH, "//*[@id='signup_list']/tbody/tr")))
-    # for tableSignupRow in tableSignupRows[1:]:
-    #     name = tableSignupRow.find_element(By.XPATH, ".//td[1]")
-    #     if name.text == " ":
-    #         continue
-    #     else:
-    #         attendingIDs.append(name.text)
-    # # //*[@id="signup_list"]/tbody/tr[2]/td[1]
-    
-    # for attendingID in attendingIDs:
-    #     print(attendingID)
+    driver.get("https://www.thestudentsunion.co.uk/organisation/admin/signups/edit/6198/")
 
-    # driver.get("https://www.thestudentsunion.co.uk/organisation/editgroups/6198/")
-
-    # btnCreateTrip = driver.find_element(By.XPATH, "//*[@id='ctl00_ctl00_Main_AdminPageContent_lbCreateNewGroup']")
-    # btnCreateTrip.click()
-
-    # dateOfTrip = input("Date Of Trip yyyy/mm/dd: ")
-    # nameOfTrip = input("Enter Name of Trip: ")
-    
-    # txtBoxTitle = driver.find_element(By.XPATH, "//*[@id='ctl00_ctl00_Main_AdminPageContent_txtName_txtTextbox']")
-    # txtBoxTitle.send_keys(f"{dateOfTrip} TRIP {nameOfTrip}")
-
-    # btnSelectTrip = driver.find_element(By.XPATH, "//*[@id='ctl00_ctl00_Main_AdminPageContent_ddType_dd']/option[4]")
-    # btnSelectTrip.click()
-
-    # btnCreateTrip = driver.find_element(By.XPATH, "//*[@id='ctl00_ctl00_Main_AdminPageContent_fsNewGroup_btnSubmit']")
-    # btnCreateTrip.click()
+    driver.save_screenshot(f"screenshots/{directory}/screenshot_{count}.png")
+    count += 1
 
     
-    # tableTripSheets = WebDriverWait(driver, 10).until(EC.presence_of_all_elements_located((By.XPATH, "//*[@id='ctl00_ctl00_Main_AdminPageContent_gvGroups']/tbody/tr")))
-    # for tableTripSheet in tableTripSheets[1:]:
-    #     name = tableTripSheet.find_element(By.XPATH, ".//td[1]")
-    #     print(name.text)
-    #     if name.text == f"{dateOfTrip} TRIP {nameOfTrip}":
-    #         btnTripSheet = name.find_element(By.XPATH, ".//a")
-    #         btnTripSheet.click()
-    #         break
-
-    # tableTripNames = WebDriverWait(driver, 10).until(EC.presence_of_all_elements_located((By.XPATH, "//*[@id='ctl00_ctl00_Main_AdminPageContent_gvPotentialMembers']/tbody/tr")))
-    # for tableTripName in tableTripNames[1:]:
-    #     id = tableTripName.find_element(By.XPATH, ".//td[3]")
-    #     print(id.text)
-    #     if id.text in attendingIDs:
-    #         print("Match")
-    #         btn = tableTripName.find_element(By.XPATH, ".//td[1]")
-    #         btn.click()
-
-
-    # btnAddMembers = driver.find_element(By.XPATH, "//*[@id='ctl00_ctl00_Main_AdminPageContent_btnAddMembers']")
-    # btnAddMembers.click()
+    day, month, year = (int(x) for x in tripDate.split('/')) 
+    ans = datetime.date(year, month, day)
+    weekDay = ans.weekday()
+    weekDays = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
     
-    #     # //*[@id="ctl00_ctl00_Main_AdminPageContent_gvPotentialMembers"]/tbody/tr[2]/td[3]
-    #     # //*[@id="ctl00_ctl00_Main_AdminPageContent_gvPotentialMembers"]/tbody/tr[3]/td[1]
-    #     # //*[@id="ctl00_ctl00_Main_AdminPageContent_gvPotentialMembers_ctl02_chkAdd"]
-    #     # //*[@id="ctl00_ctl00_Main_AdminPageContent_gvPotentialMembers"]/tbody/tr[2]/td[3]
-    #     # //*[@id="ctl00_ctl00_Main_AdminPageContent_gvGroups"]/tbody/tr[2]/td[1]/a
-    # input("")
-    # # element = driver.find_element(By.ID, "passwd-id")
-    # # //*[@id="ctl00_ctl00_Main_AdminPageContent_gvGroups"]/tbody/tr[2]/td[1]/a
+    print(ans.weekday())
+
+    title = f"MTB - {weekDays[weekDay]} at {addressLocation['nameShort']} {ans.day:02d}/{ans.month:02d}"
+
+    signupEventName= driver.find_element(By.XPATH, "//*[@id='ctl00_ctl00_Main_AdminPageContent_txtName_txtTextbox']")
+    signupEventName.send_keys(title)
+
+    driver.save_screenshot(f"screenshots/{directory}/screenshot_{count}.png")
+    count += 1
+
+    signupEventDate= driver.find_element(By.XPATH, "//*[@id='ctl00_ctl00_Main_AdminPageContent_datesEvent_txtFromDate']")
+    signupEventDate.send_keys(tripDate)
+
+    driver.save_screenshot(f"screenshots/{directory}/screenshot_{count}.png")
+    count += 1
+
+    signupEventTime= driver.find_element(By.XPATH, "//*[@id='ctl00_ctl00_Main_AdminPageContent_datesEvent_txtFromTime']")
+    if weekDay == 2:
+        signupEventTime.send_keys("12:30")
+        driver.save_screenshot(f"screenshots/{directory}/screenshot_{count}.png")
+        count += 1
+    elif weekDay == 6:
+        signupEventTime.send_keys("10:00")
+        driver.save_screenshot(f"screenshots/{directory}/screenshot_{count}.png")
+        count += 1
+    else:
+        input("There has been an error on Signups event time")
+
+    signupEventDateEnd= driver.find_element(By.XPATH, "//*[@id='ctl00_ctl00_Main_AdminPageContent_datesEvent_txtToDate']")
+    signupEventDateEnd.send_keys(tripDate)
+
+    driver.save_screenshot(f"screenshots/{directory}/screenshot_{count}.png")
+    count += 1
+
+    signupEventTimeEnd= driver.find_element(By.XPATH, "//*[@id='ctl00_ctl00_Main_AdminPageContent_datesEvent_txtToTime']")
+    signupEventTimeEnd.send_keys("19:00")
+
+    driver.save_screenshot(f"screenshots/{directory}/screenshot_{count}.png")
+    count += 1
+
+    now = datetime.datetime.now()
+
+    signupSignupTime= driver.find_element(By.XPATH, "//*[@id='ctl00_ctl00_Main_AdminPageContent_datesSignup_txtFromDate']")
+    signupSignupTime.send_keys(f"{now.day:02d}/{now.month:02d}/{now.year}")
+
+    driver.save_screenshot(f"screenshots/{directory}/screenshot_{count}.png")
+    count += 1
+
+    signupSignupTimeTime= driver.find_element(By.XPATH, "//*[@id='ctl00_ctl00_Main_AdminPageContent_datesSignup_txtFromTime']")
+    signupSignupTimeTime.send_keys(f"{now.hour:02d}:{now.minute:02d}")
+
+    driver.save_screenshot(f"screenshots/{directory}/screenshot_{count}.png")
+    count += 1
+
+    signupSignupTimeEnd= driver.find_element(By.XPATH, "//*[@id='ctl00_ctl00_Main_AdminPageContent_datesSignup_txtToDate']")
+
+    signupSignupTimeTimeEnd= driver.find_element(By.XPATH, "//*[@id='ctl00_ctl00_Main_AdminPageContent_datesSignup_txtToTime']")
+
+    if weekDay == 2:
+        signupDate = datetime.datetime.strptime(tripDate, r'%d/%m/%Y') - timedelta(days=2)
+        signupSignupTimeEnd.send_keys(f"{signupDate.day:02d}/{signupDate.month:02d}/{signupDate.year}")
+        signupSignupTimeTimeEnd.send_keys("12:00")
+        driver.save_screenshot(f"screenshots/{directory}/screenshot_{count}.png")
+        count += 1
+    elif weekDay == 6:
+        signupDate = datetime.datetime.strptime(tripDate, r'%d/%m/%Y') - timedelta(days=3)
+        signupSignupTimeEnd.send_keys(f"{signupDate.day:02d}/{signupDate.month:02d}/{signupDate.year}")
+        signupSignupTimeTimeEnd.send_keys("12:00")
+        driver.save_screenshot(f"screenshots/{directory}/screenshot_{count}.png")
+        count += 1
+    else:
+        input("There has been an error on Signups event time 2 ")
+
+    btnSubmit = driver.find_element(By.XPATH, "//*[@id='ctl00_ctl00_Main_AdminPageContent_fsUpdate_btnSubmit']")
+    btnSubmit.click()
+
+    driver.save_screenshot(f"screenshots/{directory}/screenshot_{count}.png")
+    count += 1
+
+    numberOfRows = -1
+    tableRows = WebDriverWait(driver, 10).until(EC.presence_of_all_elements_located((By.XPATH, "//*[@id='ctl00_ctl00_Main_AdminPageContent_gvSignups']/tbody/tr")))
+
+    for num,tableRow in enumerate(tableRows[1:],start = 2):
+        rowName = tableRow.find_element(By.XPATH, ".//td[1]")
+        print(f"{num}. {rowName.text}")
+        if rowName.text == title:
+            btnCopySheet = tableRow.find_element(By.XPATH, f"//*[@id='ctl00_ctl00_Main_AdminPageContent_gvSignups']/tbody/tr[{num}]/td[5]/a")
+            btnCopySheet.click()
+            break
+
+    driver.save_screenshot(f"screenshots/{directory}/screenshot_{count}.png")
+    count += 1
+
+    signupEventName= driver.find_element(By.XPATH, "//*[@id='ctl00_ctl00_Main_AdminPageContent_txtName_txtTextbox']")
+    signupEventName.clear()
+
+    driver.save_screenshot(f"screenshots/{directory}/screenshot_{count}.png")
+    count += 1
+
+    signupEventName.send_keys(f"Lifts: {title}")
+
+    driver.save_screenshot(f"screenshots/{directory}/screenshot_{count}.png")
+    count += 1
+
+    btnCapacity = driver.find_element(By.XPATH, "//*[@id='ctl00_ctl00_Main_AdminPageContent_numCapacity_txtTextbox']")
+    btnCapacity.send_keys("3")
+
+    driver.save_screenshot(f"screenshots/{directory}/screenshot_{count}.png")
+    count += 1
+
+    btnReserved = driver.find_element(By.XPATH, "//*[@id='ctl00_ctl00_Main_AdminPageContent_numReserveCapacity_txtTextbox']")
+    btnReserved.send_keys("10")
+
+    driver.save_screenshot(f"screenshots/{directory}/screenshot_{count}.png")
+    count += 1
+
+    btnSubmit = driver.find_element(By.XPATH, "//*[@id='ctl00_ctl00_Main_AdminPageContent_fsUpdate_btnSubmit']")
+    btnSubmit.click()
     
 
+    input("Press any key to finish")
+    
+    
 
-    # # text_box = driver.find_element(by=By.NAME, value="my-text")
-    # # submit_button = driver.find_element(by=By.CSS_SELECTOR, value="button")
-
-    # # text_box.send_keys("Selenium")
-    # # submit_button.click()
-
-    # # message = driver.find_element(by=By.ID, value="message")
-    # # value = message.text
-    # # assert value == "Received!"
-
-    # # driver.quit()
 
 test_eight_components()
