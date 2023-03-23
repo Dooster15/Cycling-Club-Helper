@@ -1,0 +1,6 @@
+{'date': '22/03/2023', 'tripCreated': 1, 'tripName': '', 'shortTripName': '', 'submitDate': '', 'submitted': 1}
+{'date': '26/03/2023', 'tripCreated': 1, 'tripName': 'MTB - Sunday at Wind hill 26/03', 'shortTripName': 'MTB - Sunday at Wind hill', 'submitDate': '23/03/2023', 'submitted': 1}
+{'date': '29/03/2023', 'tripCreated': 1, 'tripName': 'MTB - Wednesday at Dean 29/03', 'shortTripName': 'MTB - Wednesday at Dean', 'submitDate': '27/03/2023', 'submitted': 0}
+{'date': '02/04/2023', 'tripCreated': 0, 'tripName': '', 'shortTripName': '', 'submitDate': '', 'submitted': 0}
+{'date': '05/04/2023', 'tripCreated': 0, 'tripName': '', 'shortTripName': '', 'submitDate': '', 'submitted': 0}
+{'date': '09/04/2023', 'tripCreated': 0, 'tripName': '', 'shortTripName': '', 'submitDate': '', 'submitted': 0}
