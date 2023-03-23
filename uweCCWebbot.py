@@ -49,6 +49,8 @@ def test_eight_components(selectedSignup,dateOfTrip,nameOfTrip):
     tableRows = WebDriverWait(driver, 10).until(EC.presence_of_all_elements_located((By.XPATH, "//*[@id='ctl00_ctl00_Main_AdminPageContent_gvSignups']/tbody/tr")))
     for num,tableRow in enumerate(tableRows[1:],start = 2):
         name = tableRow.find_element(By.XPATH, ".//td[1]")
+        if name.text == selectedSignup:
+            selectedSignup = num
         print(f"{num}. {name.text}")
         # if "MTB" in name.text:
         #     print("Found")
@@ -60,63 +62,58 @@ def test_eight_components(selectedSignup,dateOfTrip,nameOfTrip):
     # dateOfTrip = input("Date Of Trip yyyy/mm/dd: ")
     # nameOfTrip = input("Enter Name of Trip: ")
 
-    while(1):     
-        now1 = datetime.datetime.now()
-        if now1.hour == 12 and now1.minute == 0:
-            btnSignups = tableRow.find_element(By.XPATH, f"//*[@id='ctl00_ctl00_Main_AdminPageContent_gvSignups']/tbody/tr[{selectedSignup}]/td[4]/a")
-            btnSignups.click()
 
-            tableSignupRows = WebDriverWait(driver, 10).until(EC.presence_of_all_elements_located((By.XPATH, "//*[@id='signup_list']/tbody/tr")))
-            for tableSignupRow in tableSignupRows[1:]:
-                name = tableSignupRow.find_element(By.XPATH, ".//td[1]")
-                if name.text == " ":
-                    continue
-                else:
-                    attendingIDs.append(name.text)
-            # //*[@id="signup_list"]/tbody/tr[2]/td[1]
-            
-            for attendingID in attendingIDs:
-                print(attendingID)
+    btnSignups = tableRow.find_element(By.XPATH, f"//*[@id='ctl00_ctl00_Main_AdminPageContent_gvSignups']/tbody/tr[{selectedSignup}]/td[4]/a")
+    btnSignups.click()
 
-            driver.get("https://www.thestudentsunion.co.uk/organisation/editgroups/6198/")
+    tableSignupRows = WebDriverWait(driver, 10).until(EC.presence_of_all_elements_located((By.XPATH, "//*[@id='signup_list']/tbody/tr")))
+    for tableSignupRow in tableSignupRows[1:]:
+        name = tableSignupRow.find_element(By.XPATH, ".//td[1]")
+        if name.text == " ":
+            continue
+        else:
+            attendingIDs.append(name.text)
+    # //*[@id="signup_list"]/tbody/tr[2]/td[1]
+    
+    for attendingID in attendingIDs:
+        print(attendingID)
 
-            btnCreateTrip = driver.find_element(By.XPATH, "//*[@id='ctl00_ctl00_Main_AdminPageContent_lbCreateNewGroup']")
-            btnCreateTrip.click()
-            
-            txtBoxTitle = driver.find_element(By.XPATH, "//*[@id='ctl00_ctl00_Main_AdminPageContent_txtName_txtTextbox']")
-            txtBoxTitle.send_keys(f"{dateOfTrip} TRIP {nameOfTrip}")
+    driver.get("https://www.thestudentsunion.co.uk/organisation/editgroups/6198/")
 
-            btnSelectTrip = driver.find_element(By.XPATH, "//*[@id='ctl00_ctl00_Main_AdminPageContent_ddType_dd']/option[4]")
-            btnSelectTrip.click()
+    btnCreateTrip = driver.find_element(By.XPATH, "//*[@id='ctl00_ctl00_Main_AdminPageContent_lbCreateNewGroup']")
+    btnCreateTrip.click()
+    
+    txtBoxTitle = driver.find_element(By.XPATH, "//*[@id='ctl00_ctl00_Main_AdminPageContent_txtName_txtTextbox']")
+    txtBoxTitle.send_keys(f"{dateOfTrip} TRIP {nameOfTrip}")
 
-            btnCreateTrip = driver.find_element(By.XPATH, "//*[@id='ctl00_ctl00_Main_AdminPageContent_fsNewGroup_btnSubmit']")
-            btnCreateTrip.click()
+    btnSelectTrip = driver.find_element(By.XPATH, "//*[@id='ctl00_ctl00_Main_AdminPageContent_ddType_dd']/option[4]")
+    btnSelectTrip.click()
 
-            
-            tableTripSheets = WebDriverWait(driver, 10).until(EC.presence_of_all_elements_located((By.XPATH, "//*[@id='ctl00_ctl00_Main_AdminPageContent_gvGroups']/tbody/tr")))
-            for tableTripSheet in tableTripSheets[1:]:
-                name = tableTripSheet.find_element(By.XPATH, ".//td[1]")
-                print(name.text)
-                if name.text == f"{dateOfTrip} TRIP {nameOfTrip}":
-                    btnTripSheet = name.find_element(By.XPATH, ".//a")
-                    btnTripSheet.click()
-                    break
+    btnCreateTrip = driver.find_element(By.XPATH, "//*[@id='ctl00_ctl00_Main_AdminPageContent_fsNewGroup_btnSubmit']")
+    btnCreateTrip.click()
 
-            tableTripNames = WebDriverWait(driver, 10).until(EC.presence_of_all_elements_located((By.XPATH, "//*[@id='ctl00_ctl00_Main_AdminPageContent_gvPotentialMembers']/tbody/tr")))
-            for tableTripName in tableTripNames[1:]:
-                id = tableTripName.find_element(By.XPATH, ".//td[3]")
-                print(id.text)
-                if id.text in attendingIDs:
-                    print("Match")
-                    btn = tableTripName.find_element(By.XPATH, ".//td[1]")
-                    btn.click()
+    
+    tableTripSheets = WebDriverWait(driver, 10).until(EC.presence_of_all_elements_located((By.XPATH, "//*[@id='ctl00_ctl00_Main_AdminPageContent_gvGroups']/tbody/tr")))
+    for tableTripSheet in tableTripSheets[1:]:
+        name = tableTripSheet.find_element(By.XPATH, ".//td[1]")
+        print(name.text)
+        if name.text == f"{dateOfTrip} TRIP {nameOfTrip}":
+            btnTripSheet = name.find_element(By.XPATH, ".//a")
+            btnTripSheet.click()
+            break
+
+    tableTripNames = WebDriverWait(driver, 10).until(EC.presence_of_all_elements_located((By.XPATH, "//*[@id='ctl00_ctl00_Main_AdminPageContent_gvPotentialMembers']/tbody/tr")))
+    for tableTripName in tableTripNames[1:]:
+        id = tableTripName.find_element(By.XPATH, ".//td[3]")
+        print(id.text)
+        if id.text in attendingIDs:
+            print("Match")
+            btn = tableTripName.find_element(By.XPATH, ".//td[1]")
+            btn.click()
 
 
-            btnAddMembers = driver.find_element(By.XPATH, "//*[@id='ctl00_ctl00_Main_AdminPageContent_btnAddMembers']")
-            btnAddMembers.click()
-            input("")
-        print(f"{now1.hour}:{now1.minute}")
-        time.sleep(1)
+    btnAddMembers = driver.find_element(By.XPATH, "//*[@id='ctl00_ctl00_Main_AdminPageContent_btnAddMembers']")
+    btnAddMembers.click()
     
 
 # test_eight_components()

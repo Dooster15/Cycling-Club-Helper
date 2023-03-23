@@ -309,6 +309,15 @@ def test_eight_components(tripDate):
     driver.save_screenshot(f"screenshots/{directory}/screenshot_{count}.png")
     count += 1
 
+    readConfirmation = driver.find_element(By.XPATH, "//*[@id='ctl00_survey1_question_4075_radioList_0']")
+    readConfirmation.click()
+    
+    driver.save_screenshot(f"screenshots/{directory}/screenshot_{count}.png")
+    count += 1
+
+    btnSubmit = driver.find_element(By.XPATH, "//*[@id='ctl00_ctl00_Main_AdminPageContent_fsUpdate_btnSubmit']")
+    btnSubmit.click()
+
     input("")
 
     driver.get("https://www.thestudentsunion.co.uk/organisation/admin/signups/edit/6198/")
@@ -436,7 +445,8 @@ def test_eight_components(tripDate):
 
     btnSubmit = driver.find_element(By.XPATH, "//*[@id='ctl00_ctl00_Main_AdminPageContent_fsUpdate_btnSubmit']")
     btnSubmit.click()
-    
+
+
 
     input("Press any key to finish")
     return [signupDate,title,shortTile]

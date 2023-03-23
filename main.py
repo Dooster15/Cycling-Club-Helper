@@ -7,7 +7,7 @@ import keyboard
 import uweCCWebbot
 from inputimeout import inputimeout
 
-now = datetime.datetime.now()
+
 weekDays = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
 
 menuDates = []
@@ -16,6 +16,7 @@ menuDatesFile = []
 
 
 def checkNewDates():
+    now = datetime.datetime.now()
     x=1
     with open('sample.txt', 'a') as f:
         while x <= 21:
@@ -60,12 +61,14 @@ def loopSubmit():
         y += 1
 
     while True:
+        now = datetime.datetime.now()
         if keyboard.is_pressed("q"):
             print("q pressed, ending loop")
             time.sleep(1)
             break
 
         for trip in trips:
+            time.sleep(1)
             if trip[1]['submitted'] == 0:
                 print(trip)
                 if trip[1]['submitDate'] != "" and trip[1]:
@@ -85,7 +88,6 @@ def loopSubmit():
 
                             #add code to call uweCCWebbot to submit trip sheet
                             break
-                        time.sleep(1)
                 # if tempDate == 
 
 def newTrip():
